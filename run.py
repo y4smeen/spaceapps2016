@@ -22,7 +22,7 @@
 # if __name__ == "__main__":
 #     app.run(debug=True)
 
-from flask import Flask, request, redirect
+from flask import Flask, request, redirect, render_template
 import twilio.twiml
 
 app = Flask(__name__)
@@ -46,6 +46,10 @@ def hello_monkey():
     resp.message(message)
 
     return str(resp)
+
+@app.route("/eonet")
+def eonet():
+    render_template("eonet.html")
 
 if __name__ == "__main__":
     app.run(debug=True)

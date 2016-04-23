@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<head>
+
+</head>
+
+<body>
+  <dl id="eventList"></dl>
+  <script>
+  $( document ).ready(function() {
+    $.getJSON( "http://eonet.sci.gsfc.nasa.gov/api/v2.1/events", {
+        status: "open",
+        limit: 20
+    })
+    .done(function( data ) {
+        $.each( data.events, function( key, event ) {
+            $( "#eventList" ).append(
+                "<dt>" + event.id + ": " + event.title + "</dt>"
+            );
+            if (event.description.length) {
+                $( "#eventList" ).append(
+                    "<dd><em>" + event.description + "</em></dd>"
+                );
+            }
+        });
+    });
+  });
+  </script>
+</body>
