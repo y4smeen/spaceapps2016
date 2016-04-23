@@ -49,7 +49,7 @@ def hello_monkey():
 
 @app.route("/eonet")
 def eonet():
-    render_template("eonet.html")
+    return render_template("eonet.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
