@@ -5,6 +5,8 @@
     <title>Simple Map</title>
     <meta name="viewport" content="initial-scale=1.0">
     <meta charset="utf-8">
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="../static/CustomGoogleMapMarker.js"></script>
     <style>
       html, body {
         height: 100%;
@@ -19,38 +21,32 @@
   <body>
     <div id="map"></div>
     <script>
+    var myLatlng = new google.maps.LatLng(40.7128,-74.0059);
+
     var initMap = function() {
       var map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: 40.7128, lng: -74.0059},
-        zoom: 6
-        });
-      var infoWindow = new google.maps.InfoWindow({map: map});
+        center: myLatlng,
+        zoom: 4,
+        disableDefaultUI: true
+      });
 
-        // Try HTML5 geolocation.
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-            var pos = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude
-            };
+      /*
+    	// Example standard marker
+    	var marker = new google.maps.Marker({
+    		position: myLatlng,
+    		map: map,
+    		title: 'Hello World!'
+    	});
+    	*/
 
-            infoWindow.setPosition(pos);
-            infoWindow.setContent('Location found.');
-            map.setCenter(pos);
-        }, function() {
-            handleLocationError(true, infoWindow, map.getCenter());
-        });
-        } else {
-        // Browser doesn't support Geolocation
-        handleLocationError(false, infoWindow, map.getCenter());
+      var overlay = new CustomMarker(
+        myLatlng,
+        map,
+        {
+          marker_id: '123',
+          colour: 'Red'
         }
-
-      function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-        infoWindow.setPosition(pos);
-        infoWindow.setContent(browserHasGeolocation ?
-                              'Error: The Geolocation service failed.' :
-                              'Error: Your browser doesn\'t support geolocation.');
-      }
+      );
     }
     </script>
 
