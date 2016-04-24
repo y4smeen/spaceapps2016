@@ -32,6 +32,10 @@ callers = {
     "+19176693554": "Yasmeen"
 }
 
+@app.route("/map")
+def map():
+    return render_template("maps.html")
+
 @app.route("/", methods=['GET', 'POST'])
 def hello_monkey():
     """Respond and greet the caller by name."""
