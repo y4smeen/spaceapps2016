@@ -34,7 +34,7 @@ callers = {
 
 @app.route("/map")
 def map():
-    return render_template("maps1.html")
+    return render_template("maps.html")
 
 @app.route("/", methods=['GET', 'POST'])
 def hello_monkey():

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple Map</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+      var map;
+      // var myLatlng = new google.maps.LatLng(40.7128,-74.0059);
+      function initMap() {
+        var myLatlng = new google.maps.LatLng(40.7128,-74.0059);
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: 40.7128, lng: -74.0059},
+          zoom: 1
+        });
+
+        var server = "http://eonet.sci.gsfc.nasa.gov/api/v2.1";
+
+        $( document ).ready(function() {
+            $.getJSON( server + "/events", {
+                status: "open",
+                limit: 20
+            })
+                .done(function( data ) {
+                    $.each( data.events, function( key, event ) {
+                        // $( "#eventList" ).append(
+                        //     "<dt class='event'>" +
+                        //     "<a href='#' onclick='showLayers(\"" + event.id+ "\");'>" +
+                        //     event.title + "</a></dt>"
+                        // );
+                        // var icon = picstype.indexOf(event.categories.title)];
+                        var description = "";
+
+                        if (event.description.length) {
+                            description = event.description;
+                        }
+
+                        var latlong = {lat: event.geometries[0].coordinates[0], lng: event.geometries[0].coordinates[1]};
+
+                        var contentString = '<div id="content">'+
+                        '<div id="siteNotice">'+
+                        '</div>'+
+                        '<h1 id="firstHeading" class="firstHeading"><a href="' + event.link + '">' + event.title + '</a></h1>'+
+                        '<br><h2>' + event.categories.title + '</h2>' +
+                        '<br><h3>' + event.geometries[0].date + '</h3>' +
+                        '<div id="bodyContent">'+
+                        '<p>' + description + '</p>'+
+                        // '<p>' + event.sources[0].url + '</p>'+
+                        '</div>'+
+                        '</div>';
+
+                        var infowindow = new google.maps.InfoWindow({
+                          content: contentString
+                        });
+
+                        var marker = new google.maps.Marker({
+                          position: latlong,
+                          map: map,
+                          title: event.title
+                        });
+
+                        marker.addListener('click', function() {
+                          infowindow.open(map, marker);
+                        });
+
+
+                    });
+                });
+        });
+      }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBu9RfAy5mXwh_U7WDoLnpdfJQwNmiIZTE&callback=initMap"
+    async defer></script>
+  </body>
+</html>

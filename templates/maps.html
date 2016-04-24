@@ -6,7 +6,6 @@
     <meta name="viewport" content="initial-scale=1.0">
     <meta charset="utf-8">
     <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
-    <script src="../static/CustomGoogleMapMarker.js"></script>
     <style>
       html, body {
         height: 100%;
@@ -30,23 +29,32 @@
         disableDefaultUI: true
       });
 
-      /*
-    	// Example standard marker
-    	var marker = new google.maps.Marker({
-    		position: myLatlng,
-    		map: map,
-    		title: 'Hello World!'
-    	});
-    	*/
+      var script = document.createElement('script');
 
-      var overlay = new CustomMarker(
-        myLatlng,
-        map,
-        {
-          marker_id: '123',
-          colour: 'Red'
+      script.src = 'http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_week.geojsonp';
+      document.getElementsByTagName('head')[0].appendChild(script);
+
+      var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
+      var icons = {
+        parking: {
+          icon: iconBase + 'parking_lot_maps.png'
+        },
+        library: {
+          icon: iconBase + 'library_maps.png'
+        },
+        info: {
+          icon: iconBase + 'info-i_maps.png'
         }
-      );
+      };
+
+      function addMarker(feature) {
+        var marker = new google.maps.Marker({
+          position: feature.position,
+          icon: icons[feature.type].icon,
+          map: map
+        });
+      }
+
     }
     </script>
 
